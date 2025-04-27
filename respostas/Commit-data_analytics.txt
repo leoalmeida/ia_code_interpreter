@@ -1,0 +1,16 @@
+### Sugestão de Mensagem de Commit
+
+**Título do Commit:**
+
+✨📊 Implementa classe para análise de dados de streams do Twitch
+
+**Descrição:**
+
+Este commit introduz a classe `dataanalytics` que fornece funcionalidades diversas para analisar dados de transmissões do Twitch. As funcionalidades principais incluem:
+
+- **getTopChannelByViewers:** Identifica os canais de maior popularidade com base no tempo total de visualização.
+- **getStreamerStats:** Gera estatísticas detalhadas para um streamer específico, incluindo média de espectadores, tempo total de transmissão e tempo de visualização.
+- **getTopChannelByStreamTime:** Calcula os top canais por tempo total de transmissão, mantendo integridade de dados ao remover valores nulos.
+- **getAverageViewersByChannel:** Retorna a média de espectadores para os principais canais.
+
+Esta implementação visa facilitar a análise rápida e precisa dos dados de transmissão para insights melhores sobre o desempenho dos canais.
