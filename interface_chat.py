@@ -30,9 +30,9 @@ class InterfaceChat():
                             
                             if isinstance(self.chat, AssistenteDocumentacao):
                                 salvar_resposta_ia_binario(self.chat.caminho_arquivo, arquivo_dados, "Codigo-Documentacao")
-                            elif isinstance(self.chat, AssistenteDocumentacao):
+                            elif isinstance(self.chat, AssistenteRevisao):
                                 salvar_resposta_ia_binario(self.chat.caminho_arquivo, arquivo_dados, "Codigo-Revisao")
-                            elif isinstance(self.chat, AssistenteDocumentacao):
+                            elif isinstance(self.chat, AssistenteTesteUnitario):
                                 salvar_resposta_ia_binario(self.chat.caminho_arquivo, arquivo_dados, "Codigo-Teste")
                 lista_respostas.append(mensagem.text.value)
         

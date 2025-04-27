@@ -3,7 +3,6 @@ import json
 import pytest
 import pandas as pd
 from pandas import DataFrame
-from twitch_analytics.data_analytics import dataanalytics
 
 class dataanalytics:
     def __init__(self, data: DataFrame):

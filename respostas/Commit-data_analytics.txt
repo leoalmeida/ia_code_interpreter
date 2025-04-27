@@ -1,16 +1,19 @@
-### Sugestão de Mensagem de Commit
+Com base no código lido, aqui está a análise das funcionalidades providas pela classe `dataanalytics`:
 
-**Título do Commit:**
+### Métodos e Funcionalidades
 
-✨📊 Implementa classe para análise de dados de streams do Twitch
+- **`__init__`**: Construtor da classe que inicializa os dados, criando também cópias e preparando um cache.
 
-**Descrição:**
+- **`getTopChannelByViewers(self, top_n=10)`**: Retorna os canais com mais espectadores, agrupando os dados por canal e somando o tempo de visualização. Armazena o resultado em um cache para otimização.
 
-Este commit introduz a classe `dataanalytics` que fornece funcionalidades diversas para analisar dados de transmissões do Twitch. As funcionalidades principais incluem:
+- **`getStreamerStats(self, streamer: str)`**: Fornece estatísticas específicas de um streamer, incluindo a média de espectadores, tempo total de visualização e tempo total de transmissão. Retorna os resultados como um JSON.
 
-- **getTopChannelByViewers:** Identifica os canais de maior popularidade com base no tempo total de visualização.
-- **getStreamerStats:** Gera estatísticas detalhadas para um streamer específico, incluindo média de espectadores, tempo total de transmissão e tempo de visualização.
-- **getTopChannelByStreamTime:** Calcula os top canais por tempo total de transmissão, mantendo integridade de dados ao remover valores nulos.
-- **getAverageViewersByChannel:** Retorna a média de espectadores para os principais canais.
+- **`getTopChannelByStreamTime(self, top_n=10)`**: Identifica os canais que mais transmitiram, somando os tempos de transmissão por canal.
 
-Esta implementação visa facilitar a análise rápida e precisa dos dados de transmissão para insights melhores sobre o desempenho dos canais.
+- **`getAverageViewersByChannel(self, top_n=10)`**: Calcula e retorna a média de espectadores por canal.
+
+### Sugestão de Commit
+
+✨📈 Adiciona classe para análise de dados do Twitch
+
+Esta classe, `dataanalytics`, realiza análise de dados de streaming na plataforma Twitch, permitindo identificar os canais com mais espectadores e tempo de transmissão, além de fornecer estatísticas detalhadas para streamers específicos.

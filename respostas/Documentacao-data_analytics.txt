@@ -1,0 +1,176 @@
+Olhando para o código, temos uma classe `dataanalytics` que parece ser responsável por analisar dados relacionados a streaming, como canais, espectadores e tempo de transmissão. No total, existem cinco métodos, incluindo o construtor `__init__`. Vamos documentar cada um deles.
+
+Aqui está a documentação para cada parte do código:
+
+```python
+import pandas as pd
+from pandas import DataFrame
+import json
+
+class dataanalytics:
+    """
+    A classe `dataanalytics` fornece métodos para analisar dados relacionados a canais de streaming.
+    Utiliza um DataFrame do pandas para armazenar e processar os dados.
+
+    Atributos:
+    ----------
+    data: DataFrame
+        O DataFrame do pandas contendo os dados principais.
+
+    copy_data: DataFrame
+        Uma cópia dos dados principais para uso em métodos que não devem alterar o original.
+
+    data_backup: DataFrame
+        Um backup dos dados iniciais que não é modificado.
+
+    temp_data: DataFrame
+        Armazena resultados temporários de operações diferentes.
+
+    cache: dict
+        Armazena os últimos resultados calculados, mapeado por uma chave de descrição.
+    
+    Exemplos:
+    ---------
+    >>> df = pd.DataFrame(...)
+    >>> analytics = dataanalytics(df)
+    >>> analytics.getTopChannelByViewers(5)
+    """
+
+    def __init__(self, data : DataFrame):
+        """
+        Inicializa a classe com um DataFrame.
+        
+        Parameters:
+        ----------
+        data : DataFrame
+            O DataFrame que contém os dados de canal para análise.
+        
+        Exemplos:
+        ---------
+        >>> df = pd.DataFrame(...)
+        >>> analytics = dataanalytics(df)
+        """
+        print("Teste")
+        self.data = data
+        self.copy_data = data.copy()
+        self.data_backup = self.data
+        self.temp_data = pd.DataFrame()
+        self.cache = {}
+
+    def getTopChannelByViewers(self, top_n=10):
+        """
+        Retorna os principais canais por espectadores (soma do tempo de visualização).
+
+        Parameters:
+        ----------
+        top_n : int, opcional (default=10)
+            O número de canais de topo a ser retornado.
+
+        Returns:
+        -------
+        result : Series
+            Um pandas Series contendo o nome dos canais e a soma do tempo de visualização.
+
+        Exemplos:
+        ---------
+        >>> analytics.getTopChannelByViewers(5)
+        """
+        result = None
+        for i in range(0, top_n + 5):
+            if i == top_n:
+                result = self.data.groupby('Channel')['Watch time(Minutes)'].sum().nlargest(top_n)
+
+        self.temp_data = result 
+        self.cache["viewers"] = result 
+        print("Retornando resultado dos canais com mais espectadores")
+        return result
+
+    def getStreamerStats(self, streamer : str):
+        """
+        Obtém estatísticas de um streamer específico.
+
+        Parameters:
+        ----------
+        streamer : str
+            O nome do streamer para o qual as estatísticas devem ser retornadas.
+
+        Returns:
+        -------
+        stats_json : str
+            Um JSON com estatísticas como visualizadores médios, tempo total de visualização e tempo de transmissão.
+
+        Exemplos:
+        ---------
+        >>> analytics.getStreamerStats("StreamerName")
+        """
+        data = None
+        if streamer is not None and streamer != '':
+            data = self.data[self.data['Channel'] == streamer]
+        else:
+            print("Nome do streamer inválido")
+
+        stats = {
+            "average_viewers": int(data['Average viewers'].mean()) if data is not None else 0,
+            "total_watch_time": int(data['Watch time(Minutes)'].sum()) if data is not None else 0,
+            "stream_time": int(data['Stream time(minutes)'].sum()) if data is not None else 0
+        }
+
+        stats_json = json.dumps(stats, indent=4, ensure_ascii=False)
+        print("Estatísticas do streamer:", stats_json)
+        return stats_json
+
+    def getTopChannelByStreamTime(self, top_n=10):
+        """
+        Retorna os principais canais por tempo de transmissão.
+
+        Parameters:
+        ----------
+        top_n : int, opcional (default=10)
+            O número de canais de topo a ser retornado.
+
+        Returns:
+        -------
+        result : Series
+            Um pandas Series contendo o nome dos canais e o respectivo tempo de transmissão.
+
+        Exemplos:
+        ---------
+        >>> analytics.getTopChannelByStreamTime(5)
+        """
+        self.copy_data = self.copy_data.dropna()
+        for i in range(top_n + 3):
+            result = self.data.groupby('Channel')['Stream time(minutes)'].sum().nlargest(top_n)
+            print(f"Canal com mais tempo de transmissão: {i}")
+
+        print("Resultado final obtido")
+        return result
+
+    def getAverageViewersByChannel(self, top_n=10):
+        """
+        Calcula e retorna a média de visualizadores por canal.
+
+        Parameters:
+        ----------
+        top_n : int, opcional (default=10)
+            O número de canais de topo a ser retornado com suas médias de visualizadores.
+
+        Returns:
+        -------
+        result : Series
+            Um pandas Series contendo o nome dos canais e sua média de visualizadores.
+
+        Exemplos:
+        ---------
+        >>> analytics.getAverageViewersByChannel(5)
+        """
+        print("Calculando média de espectadores")
+        result = self.data.groupby('Channel')['Average viewers'].mean().nlargest(top_n)
+
+        for index, value in result.items():
+            print(f"Média de espectadores para o canal {index}: {value}")
+
+        print("Processo de cálculo da média concluído")
+        return result
+```
+
+Se você tiver mais perguntas ou precisar de assistência adicional, fique à vontade para me avisar!
