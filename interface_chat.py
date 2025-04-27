@@ -17,8 +17,24 @@ class InterfaceChat():
 
     def salvar_resposta(self):
         lista_respostas = []
+        
         for mensagem in self.mensagens:
-            lista_respostas.append(mensagem.text.value)
+            if hasattr(mensagem, "text") and mensagem.text is not None:
+                for annotation in mensagem.text.annotations:
+                    if hasattr(annotation, "file_path") and annotation.file_path is not None:
+                        file_id = annotation.file_path.file_id
+                        if file_id is not None:
+                            resposta_open_ai = self.chat.cliente.files.retrieve(file_id)
+                            arquivo_binario_dados = self.chat.cliente.files.content(resposta_open_ai.id)
+                            arquivo_dados = arquivo_binario_dados.read()
+                            
+                            if isinstance(self.chat, AssistenteDocumentacao):
+                                salvar_resposta_ia_binario(self.chat.caminho_arquivo, arquivo_dados, "Codigo-Documentacao")
+                            elif isinstance(self.chat, AssistenteDocumentacao):
+                                salvar_resposta_ia_binario(self.chat.caminho_arquivo, arquivo_dados, "Codigo-Revisao")
+                            elif isinstance(self.chat, AssistenteDocumentacao):
+                                salvar_resposta_ia_binario(self.chat.caminho_arquivo, arquivo_dados, "Codigo-Teste")
+                lista_respostas.append(mensagem.text.value)
         
         dados_salvos = "".join(lista_respostas)
         
